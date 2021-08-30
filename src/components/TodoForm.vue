@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="addNewTodo">
+  <form @submit.prevent="addNewTodo(value)">
     <input type="text" v-model="value" placeholder="What need to be done?" />
   </form>
 </template>
@@ -11,13 +11,7 @@ export default {
       value: "",
     };
   },
-  methods: {
-    addNewTodo() {
-      if (this.value === "") return;
-      this.$emit("formSubmit", this.value);
-      this.value = "";
-    },
-  },
+  inject: ["addNewTodo"],
 };
 </script>
 

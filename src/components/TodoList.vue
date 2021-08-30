@@ -1,7 +1,7 @@
 <template>
   <div class="todo-list">
     <h1>TODOS</h1>
-    <TodoForm @formSubmit="addNewTodo" />
+    <TodoForm @addNewTodo="addNewTodo" />
     <ul>
       <div class="progress-bar">
         <div
@@ -9,22 +9,16 @@
           :style="{ width: completePercent + '%' }"
         ></div>
       </div>
-      <TodoItem
-        v-for="todo in filteredTodos"
-        :key="todo.id"
-        :todo="todo"
-        @setStatus="setStatus"
-        @removeTodo="removeTodo"
-      >
+      <TodoItem v-for="todo in filteredTodos" :key="todo.id" :todo="todo">
       </TodoItem>
     </ul>
     <TodoSelection
-      @changeFilter="handleChangeFilter"
+      @changeFilter="changeFilter"
       :counter="
         Math.trunc(todos.length - (todos.length * completePercent) / 100)
       "
       :currentSelection="filter"
-      @clearAllCompleted="handleClearAllCompleted"
+      @clearAllCompleted="clearAllCompleted"
     />
   </div>
 </template>
@@ -67,6 +61,16 @@ export default {
       this.setFilter(newVal);
     },
   },
+
+  provide() {
+    return {
+      setStatus: this.setStatus,
+      removeTodo: this.removeTodo,
+      addNewTodo: this.addNewTodo,
+      changeFilter: this.changeFilter,
+      clearAllCompleted: this.clearAllCompleted,
+    };
+  },
   components: {
     TodoForm,
     TodoItem,
@@ -93,7 +97,7 @@ export default {
       localStorage.setItem("todos", JSON.stringify(this.todos));
     },
 
-    handleChangeFilter(val) {
+    changeFilter(val) {
       this.filter = val;
     },
 
@@ -111,7 +115,7 @@ export default {
       }
       localStorage.setItem("filter", val);
     },
-    handleClearAllCompleted() {
+    clearAllCompleted() {
       this.todos = this.todos.filter((todo) => todo.isCompleted === false);
       localStorage.setItem("todos", JSON.stringify(this.todos));
     },

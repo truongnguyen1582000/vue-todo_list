@@ -2,19 +2,19 @@
   <div class="selection">
     <div class="selection-top">
       <button
-        @click="select('all')"
+        @click="changeFilter('all')"
         :class="{ selected: this.currentSelection === 'all' }"
       >
         All
       </button>
       <button
-        @click="select('active')"
+        @click="changeFilter('active')"
         :class="{ selected: this.currentSelection === 'active' }"
       >
         Active
       </button>
       <button
-        @click="select('completed')"
+        @click="changeFilter('completed')"
         :class="{ selected: this.currentSelection === 'completed' }"
       >
         Completed
@@ -28,14 +28,7 @@
 <script>
 export default {
   props: ["counter", "currentSelection"],
-  methods: {
-    select(val) {
-      this.$emit("changeFilter", val);
-    },
-    clearAllCompleted() {
-      this.$emit("clearAllCompleted");
-    },
-  },
+  inject: ["changeFilter", "clearAllCompleted"],
 };
 </script>
 

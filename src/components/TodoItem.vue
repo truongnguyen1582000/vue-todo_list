@@ -1,27 +1,22 @@
 <template>
   <li>
-    <div @click="handleStatusChange" class="check-btn">
+    <div @click="setStatus(todo.id)" class="check-btn">
       <i class="far fa-check-square" v-if="!todo.isCompleted"></i>
       <i class="fas fa-check-square" v-else></i>
     </div>
-    <p :class="{ completed: todo.isCompleted }" @click="handleStatusChange">
+    <p :class="{ completed: todo.isCompleted }" @click="setStatus(todo.id)">
       {{ todo.title }}
     </p>
-    <button @click="handleBtnClick"><i class="fas fa-trash-alt"></i></button>
+    <button @click="removeTodo(todo.id)">
+      <i class="fas fa-trash-alt"></i>
+    </button>
   </li>
 </template>
 
 <script>
 export default {
+  inject: ["setStatus", "removeTodo"],
   props: ["todo"],
-  methods: {
-    handleStatusChange() {
-      this.$emit("setStatus", this.todo.id);
-    },
-    handleBtnClick() {
-      this.$emit("removeTodo", this.todo.id);
-    },
-  },
 };
 </script>
 
